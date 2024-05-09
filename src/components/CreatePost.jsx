@@ -6,7 +6,6 @@ import { IoLocationOutline } from "react-icons/io5";
 import toast from 'react-hot-toast';
 import { API_BASE_URL } from '../config';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const CreatePost = () => {
     const user = useSelector(state => state.userReducer);
@@ -14,13 +13,15 @@ const CreatePost = () => {
     const [location, setLocation] = useState("");
     const [image, setImage] = useState({ preview: '', data: '' })
 
+    // Configuration object for API requests
     const CONFIG_OBJ = {
         headers: {
-            "Conten-Type": "aplication/json",
+            "Content-Type": "application/json", // Corrected "Content-Type" spelling
             "Authorization": "Bearer " + localStorage.getItem("token")
         }
     }
 
+    // Function to handle file selection
     const handleFileSelect = (event) => {
         const img = {
             preview: URL.createObjectURL(event.target.files[0]),
@@ -28,6 +29,8 @@ const CreatePost = () => {
         }
         setImage(img);
     }
+
+    // Function to upload image
     const handleImgUpload = async () => {
         let formData = new FormData();
         formData.append('file', image.data);
@@ -37,6 +40,7 @@ const CreatePost = () => {
         return response;
     }
 
+    // creating post
     const addPost = async () => {
         if (caption === '') {
             toast.error("please add caption"); // Display error message using toast
@@ -47,7 +51,7 @@ const CreatePost = () => {
             const request = { description: caption, location: location, image: `${API_BASE_URL}/files/${imgRes.data.fileName}` }
 
             //write api call to create post
-            const postResponse = await axios.post(`${API_BASE_URL}/createpost`, request, CONFIG_OBJ)
+            const postResponse = await axios.post(`${API_BASE_URL}/api/createpost`, request, CONFIG_OBJ)
 
             if (postResponse.status === 201) {
                 toast.success("created");
@@ -60,14 +64,6 @@ const CreatePost = () => {
 
     return (
         <div className='w-100 border border-dark' >
-            <div className='d-flex text-secondary border border-dark'>
-                <div className='w-100 text-center'>
-                    <h3>For you</h3>
-                </div>
-                <div className='w-100 text-center'>
-                    <h3>Following</h3>
-                </div>
-            </div>
             <div className='border border-dark'>
                 <div className='d-flex p-4'>
                     <Avatar src={user?.user.profileImg} size="40" round={true} />
@@ -76,7 +72,7 @@ const CreatePost = () => {
                 <div className="col px-4">
                     <div className='upload-box dropZoneContainer'>
                         <div className="dropZoneOverlay ">
-                            {image.preview && <img src={image.preview} className='rounded' width='100%'  />}
+                            {image.preview && <img src={image.preview} className='rounded' width='100%' alt='profile-pic' />}
                             <br /></div>
                         <CiImageOn className='fs-2 my-1 btn-blue-hover' />
                         <input name="file" type="file" id="drop_zone" className="FileUpload text-black" accept=".jpg,.png,.gif" onChange={handleFileSelect} />

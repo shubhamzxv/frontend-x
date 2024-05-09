@@ -4,18 +4,20 @@ import Avatar from 'react-avatar'
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 const RightSidebar = () => {
     const [otherUsers, setOtherUsers] = useState([])
-
+// config obj   
     const CONFIG_OBJ = {
         headers: {
             "Conten-Type": "aplication/json",
             "Authorization": "Bearer " + localStorage.getItem("token")
         }
     }
+    // gets the all other users
     const getOtherUsers = async () => {
-        const response = await axios.get(`${API_BASE_URL}/otherusers`, CONFIG_OBJ);
+        const response = await axios.get(`${API_BASE_URL}/api/otherusers`, CONFIG_OBJ);
 
         if (response.status === 200) {
             setOtherUsers(response.data.otherUsers);
@@ -29,7 +31,7 @@ const RightSidebar = () => {
     }, [])
 
     return (
-        <div style={{ width: "22%" }}>
+        <div style={{ width: "25%" }} className='d-none-sm'>
             <div className='d-flex bg-dark rounded-pill'>
                 <FaSearch className='m-2' />
                 <input className='w-100 bg-dark border border-dark rounded-pill text-white' type="text" placeholder='Search' />
@@ -46,12 +48,12 @@ const RightSidebar = () => {
                                 <Avatar src={user.profileImg} size="40" round={true} />
                             </div>
                             <div className='w-100 ps-2' >
-                                <h5 className='p-0 m-0'>{user.fullName}</h5>
+                                <h6 className='p-0 m-0'>{user.fullName}</h6>
                                 <p className='text-secondary p-0 m-0'>@{user.username}</p>
                             </div>
-                            <div>
-                                <button className='px-3 py-2 btn btn-light rounded-pill fw-bold'>Follow</button>
-                            </div>
+                            <Link to={`/user/${user?._id}`}>
+                                <button className='px-3 py-2 btn btn-light rounded-pill fw-bold'>Profile</button>
+                            </Link>
                         </div>
                     )
                 })}

@@ -8,7 +8,7 @@ import { API_BASE_URL } from '../config'
 import axios from 'axios'
 import toast from 'react-hot-toast';
 
-const Login = () => {
+const SignUp = () => {
     const [fullName, setFullName] = useState("");
     const [username, setUsername] = useState("");
     const [phone, setPhone] = useState();
@@ -29,7 +29,7 @@ const Login = () => {
         const requestData = { fullName, username, gender, email, password, phone }; // Prepare request data
 
         axios
-            .post(`${API_BASE_URL}/register`, requestData)
+            .post(`${API_BASE_URL}/api/register`, requestData)
             .then((result) => {
                 if (result.status === 201) { // Check for successful registration
                     setLoading(false); // Hide loading indicator
@@ -70,7 +70,7 @@ const Login = () => {
                                 </div>
                                 <div className="form-floating mb-3 text-dark">
                                     <input type="phone" className="form-control" value={phone} onChange={(ev) => setPhone(ev.target.value)} placeholder="Phone phone" />
-                                    <label >Phone phone</label>
+                                    <label >Phone Number</label>
                                 </div>
                                 
                                 <div className="form-floating mb-3 ">
@@ -79,7 +79,7 @@ const Login = () => {
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                     </select>
-                                    <label for="floatingSelect">Gender</label>
+                                    <label htmlFor="floatingSelect">Gender</label>
                                 </div>
                                 <div className="form-floating mb-3 text-dark">
                                     <input type="email" className="form-control" value={email} onChange={(ev) => setEmail(ev.target.value)} placeholder="Email" />
@@ -116,4 +116,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default SignUp

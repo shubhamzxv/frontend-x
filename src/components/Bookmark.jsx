@@ -12,14 +12,17 @@ const Bookmark = () => {
     const [allBookmarks, setAllBookmarks] = useState([])
     const [allPosts, setAllPosts] = useState([])
 
+    // config obj
     const CONFIG_OBJ = {
         headers: {
             "Conten-Type": "aplication/json",
             "Authorization": "Bearer " + localStorage.getItem("token")
         }
     }
+
+    // getting all  bookmarks
     const getAllBookmarks = async () => {
-        const response = await axios.get(`${API_BASE_URL}/allbookmarks`, CONFIG_OBJ);
+        const response = await axios.get(`${API_BASE_URL}/api/allbookmarks`, CONFIG_OBJ);
 
         if (response.status === 200) {
             setAllBookmarks(response.data.user.bookmarks);
@@ -29,7 +32,7 @@ const Bookmark = () => {
         }
     }
     const getAllPosts = async () => {
-        const response = await axios.get(`${API_BASE_URL}/allposts`);
+        const response = await axios.get(`${API_BASE_URL}/api/allposts`);
 
         if (response.status === 200) {
             setAllPosts(response.data.posts);
@@ -39,20 +42,21 @@ const Bookmark = () => {
         }
     }
     const deletePost = async (postId) => {
-        const response = await axios.delete(`${API_BASE_URL}/deletepost/${postId}`, CONFIG_OBJ);
+        const response = await axios.delete(`${API_BASE_URL}/api/deletepost/${postId}`, CONFIG_OBJ);
         if (response.status === 200) {
             getAllPosts();
         }
     }
 
+    // life cycle method
     useEffect(() => {
         getAllBookmarks();
         getAllPosts();
-    }, [])
+    }, [allBookmarks])
 
 
     return (
-        <div style={{ width: "50%" }} className='border border-dark'>
+        <div className='border border-dark'>
             <div className='mb-0 p-2'>
                 <div className='d-flex'>
                     <Link to="/" className='text-decoration-none text-white'>

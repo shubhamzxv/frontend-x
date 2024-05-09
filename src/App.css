@@ -31,3 +31,39 @@ input:focus {
   top: 150px;
   /* border: 8px solid #000000; */
 }
+
+
+/* Media query for large devices (992px and above) */
+@media (min-width: 992px) {
+
+  /* Add your styles for large devices here */
+  .d-none-lg {
+    display: none;
+  }
+}
+
+/* Media query for medium devices (768px to 991px) */
+@media (min-width: 767px) and (max-width: 991px) {
+
+  /* Add your styles for medium devices here */
+  .d-none-sm {
+    display: none;
+  }
+
+  .d-none-md {
+    display: none;
+  }
+}
+
+/* Media query for small devices (up to 767px) */
+@media (max-width: 767px) {
+
+  /* Add your styles for small devices here */
+  .d-none-sm {
+    display: none;
+  }
+
+  .d-none-md {
+    display: none;
+  }
+}

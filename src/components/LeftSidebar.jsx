@@ -20,11 +20,11 @@ const LeftSidebar = () => {
         navigate('/login');
     }
     return (
-        <div style={{ width: "18%" }} >
+        <div style={{ width: "18%" }} className='d-none-md'>
             <div>
-                <div>
+                <Link to='/'>
                     <img src={logo} alt="x" width={"30px"}  />
-                </div>
+                </Link>
                 <div className='text-decoration-none text-white'>
                     <Link to='/' className='d-flex my-4 text-decoration-none text-white'>
                         <div className='fs-4 btn-blue-hover'><IoHomeOutline /></div>

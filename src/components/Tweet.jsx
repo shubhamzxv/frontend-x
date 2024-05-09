@@ -10,13 +10,14 @@ import { useSelector } from 'react-redux';
 import { API_BASE_URL } from '../config';
 import moment from 'moment';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 const Tweet = (props) => {
     const user = useSelector(state => state.userReducer);
     const [commentBox, setCommentBox] = useState(false);
     const [comment, setComment] = useState("");
     const [allBookmarks, setAllBookmarks] = useState([])
-
+    // config obj
     const CONFIG_OBJ = {
         headers: {
             "Content-Type": "application/json",
@@ -24,8 +25,9 @@ const Tweet = (props) => {
         }
     }
 
+    // get all bookmarks
     const getAllBookmarks = async () => {
-        const response = await axios.get(`${API_BASE_URL}/allbookmarks`, CONFIG_OBJ);
+        const response = await axios.get(`${API_BASE_URL}/api/allbookmarks`, CONFIG_OBJ);
 
         if (response.status === 200) {
             setAllBookmarks(response.data.user.bookmarks);
@@ -36,9 +38,10 @@ const Tweet = (props) => {
         }
     }
 
+    // Like and Dislike post
     const likeDislikePost = async (postId) => {
         const request = { "postId": postId };
-        const response = await axios.put(`${API_BASE_URL}/likeordislike`, request, CONFIG_OBJ);
+        const response = await axios.put(`${API_BASE_URL}/api/likeordislike`, request, CONFIG_OBJ);
         if (response.status === 200) {
             props.getAllPosts();
         }
@@ -46,19 +49,21 @@ const Tweet = (props) => {
     // bookmark
     const bookmark = async (postId) => {
         const request = { "postId": postId };
-        const response = await axios.put(`${API_BASE_URL}/bookmark`, request, CONFIG_OBJ);
+        const response = await axios.put(`${API_BASE_URL}/api/bookmark`, request, CONFIG_OBJ);
         if (response.status === 200) {
             getAllBookmarks();
             props.getAllPosts();
         }
     }
+
+    // creating comment
     const submitComment = async (postId) => {
         if (!comment) {
             toast.error("Comment box empty");
         } else {
             setCommentBox(false);
             const request = { "postId": postId, "commentText": comment };
-            const response = await axios.put(`${API_BASE_URL}/comment`, request, CONFIG_OBJ);
+            const response = await axios.put(`${API_BASE_URL}/api/comment`, request, CONFIG_OBJ);
             if (response.status === 200) {
                 props.getAllPosts();
             }
@@ -72,11 +77,11 @@ const Tweet = (props) => {
     return (
         <div className='border border-dark'>
             <div className='p-4'>
-                <div className='d-flex' key={props.postData.author._id}>
+                <Link to={`/user/${props.postData.author._id}`} className='d-flex text-decoration-none' key={props.postData.author._id}>
                     <Avatar src={props.postData.author.profileImg} size="40" round={true} />
-                    <h5 className='p-2 pe-0 fw-bold'>{props.postData.author.fullName} </h5>
+                    <h5 className='p-2 pe-0 fw-bold text-white'>{props.postData.author.fullName} </h5>
                     <h5 className='text-secondary p-2'>@{props.postData.author.username} . {moment(props.postData.createdAt).fromNow()}</h5>
-                </div>
+                </Link>
                 <div>
                     <h5><IoLocationOutline className='mx-2 pb-1' />{props.postData.location}</h5>
                     <p>{props.postData.description}</p>
@@ -120,7 +125,7 @@ const Tweet = (props) => {
                 </div> : ""}
                 {props.postData.comments.map((comment) => {
                     return (<div className='pb-2 d-flex' key={comment._id}>
-                        <Avatar src={user?.user.profileImg} size="40" round={true} />
+                        <Avatar src={comment.commentedBy.profileImg} size="40" round={true} />
                         <div className='ps-3'>
                             <div className='d-flex' >
                                 <h5 className='p-0 m-0'>{comment.commentedBy.fullName}</h5>
