@@ -4,7 +4,6 @@ import { CiImageOn } from "react-icons/ci";
 import { useSelector } from 'react-redux';
 import { IoLocationOutline } from "react-icons/io5";
 import toast from 'react-hot-toast';
-import { API_BASE_URL } from '../config';
 import axios from 'axios';
 
 const CreatePost = () => {
@@ -35,7 +34,7 @@ const CreatePost = () => {
         let formData = new FormData();
         formData.append('file', image.data);
 
-        const response = axios.post(`${API_BASE_URL}/uploadFile`, formData);
+        const response = axios.post(`${process.env.REACT_APP_API}/uploadFile`, formData);
 
         return response;
     }
@@ -48,10 +47,10 @@ const CreatePost = () => {
         else {
             const imgRes = await handleImgUpload();
             //add validation rule for caption and location
-            const request = { description: caption, location: location, image: `${API_BASE_URL}/files/${imgRes.data.fileName}` }
+            const request = { description: caption, location: location, image: `${process.env.REACT_APP_API}/files/${imgRes.data.fileName}` }
 
             //write api call to create post
-            const postResponse = await axios.post(`${API_BASE_URL}/api/createpost`, request, CONFIG_OBJ)
+            const postResponse = await axios.post(`${process.env.REACT_APP_API}/api/createpost`, request, CONFIG_OBJ)
 
             if (postResponse.status === 201) {
                 toast.success("created");

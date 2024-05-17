@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 import Tweet from './Tweet';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-import { API_BASE_URL } from '../config';
 
 const Bookmark = () => {
     const user = useSelector(state => state.userReducer);
@@ -22,7 +21,7 @@ const Bookmark = () => {
 
     // getting all  bookmarks
     const getAllBookmarks = async () => {
-        const response = await axios.get(`${API_BASE_URL}/api/allbookmarks`, CONFIG_OBJ);
+        const response = await axios.get(`${process.env.REACT_APP_API}/api/allbookmarks`, CONFIG_OBJ);
 
         if (response.status === 200) {
             setAllBookmarks(response.data.user.bookmarks);
@@ -32,7 +31,7 @@ const Bookmark = () => {
         }
     }
     const getAllPosts = async () => {
-        const response = await axios.get(`${API_BASE_URL}/api/allposts`);
+        const response = await axios.get(`${process.env.REACT_APP_API}/api/allposts`);
 
         if (response.status === 200) {
             setAllPosts(response.data.posts);
@@ -42,7 +41,7 @@ const Bookmark = () => {
         }
     }
     const deletePost = async (postId) => {
-        const response = await axios.delete(`${API_BASE_URL}/api/deletepost/${postId}`, CONFIG_OBJ);
+        const response = await axios.delete(`${process.env.REACT_APP_API}/api/deletepost/${postId}`, CONFIG_OBJ);
         if (response.status === 200) {
             getAllPosts();
         }

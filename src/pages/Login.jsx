@@ -5,9 +5,9 @@ import Footer from '../components/Footer';
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { API_BASE_URL } from '../config'
 import axios from 'axios'
 import toast from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
 
 const Login = () => {
     // State variables for email, password, and loading state
@@ -24,7 +24,7 @@ const Login = () => {
         setLoading(true);
         const requestData = { email, password };
         // Send login request to the server
-        axios.post(`${API_BASE_URL}/api/login`, requestData)
+        axios.post(`${process.env.REACT_APP_API}/api/login`, requestData)
             .then((result) => {
                 if (result.status === 200) {
                     // Store token and user data in localStorage
@@ -41,13 +41,14 @@ const Login = () => {
                 console.log(error);
                 setLoading(false);
                 // Display error message using toast
-                toast.error("something went wrong");
+                toast.error("Invalid Credentials");
             })
     }
 
     return (
         <>
             <div className="container login-container">
+                <Toaster />
                 <div className="row">
                     <div className="col-lg-7 col-sm-12 d-flex justify-content-center align-item-center">
                         <img alt='TwitterLogo' className='twitterLogo' style={{ height: '85%' }} src={twitterLogo} />

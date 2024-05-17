@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { FaSearch } from "react-icons/fa";
 import Avatar from 'react-avatar'
 import axios from 'axios';
-import { API_BASE_URL } from '../config';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 
 const RightSidebar = () => {
     const [otherUsers, setOtherUsers] = useState([])
-// config obj   
+    // config obj   
     const CONFIG_OBJ = {
         headers: {
             "Conten-Type": "aplication/json",
@@ -17,7 +16,7 @@ const RightSidebar = () => {
     }
     // gets the all other users
     const getOtherUsers = async () => {
-        const response = await axios.get(`${API_BASE_URL}/api/otherusers`, CONFIG_OBJ);
+        const response = await axios.get(`${process.env.REACT_APP_API}/api/otherusers`, CONFIG_OBJ);
 
         if (response.status === 200) {
             setOtherUsers(response.data.otherUsers);

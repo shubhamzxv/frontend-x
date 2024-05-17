@@ -4,7 +4,6 @@ import Avatar from 'react-avatar';
 import { IoMdArrowBack } from "react-icons/io";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { API_BASE_URL } from '../config';
 import moment from 'moment';
 import toast from 'react-hot-toast';
 import Tweet from './Tweet';
@@ -43,7 +42,7 @@ const ProfileDetails = () => {
     const handleImgUpload = async () => {
         let formData = new FormData();
         formData.append('file', image.data);
-        const response = axios.post(`${API_BASE_URL}/uploadFile`, formData);
+        const response = axios.post(`${process.env.REACT_APP_API}/uploadFile`, formData);
         return response;
     }
     // form Update function
@@ -54,12 +53,12 @@ const ProfileDetails = () => {
             const request = {
                 fullName: fullName,
                 phone: phone,
-                image: `${API_BASE_URL}/files/${imgRes.data.fileName}`,
+                image: `${process.env.REACT_APP_API}/files/${imgRes.data.fileName}`,
                 password: password,
                 username: username,
-                gender:gender
+                gender: gender
             }
-            const { data } = await axios.put(`${API_BASE_URL}/api/update-profile`,request , CONFIG_OBJ);
+            const { data } = await axios.put(`${process.env.REACT_APP_API}/api/update-profile`, request, CONFIG_OBJ);
             if (data?.error) {
                 toast.error(data?.error);
             } else {
@@ -90,24 +89,24 @@ const ProfileDetails = () => {
     async function fetchUser() {
         try {
             if (id) {
-                const response = await axios.get(`${API_BASE_URL}/api/user/${id}`, CONFIG_OBJ);
+                const response = await axios.get(`${process.env.REACT_APP_API}/api/user/${id}`, CONFIG_OBJ);
                 setUser1(response.data.user);
                 setFullName(response.data.user.fullName)
                 setUsername(response.data.user.username)
                 setPhone(response.data.user.phone)
                 setGender(response.data.user.gender)
                 setEmail(response.data.user.email)
-             
+
             }
         } catch (error) {
             console.error('Error fetching user:', error);
-           
+
         }
     }
 
     // Function to fetch all posts
     const getAllPosts = async () => {
-        const response = await axios.get(`${API_BASE_URL}/api/allposts`);
+        const response = await axios.get(`${process.env.REACT_APP_API}/api/allposts`);
 
         if (response.status === 200) {
             setAllPosts(response.data.posts);
@@ -119,7 +118,7 @@ const ProfileDetails = () => {
 
     // Function to delete a post
     const deletePost = async (postId) => {
-        const response = await axios.delete(`${API_BASE_URL}/api/deletepost/${postId}`, CONFIG_OBJ);
+        const response = await axios.delete(`${process.env.REACT_APP_API}/api/deletepost/${postId}`, CONFIG_OBJ);
         if (response.status === 200) {
             getAllPosts();
         }
@@ -142,8 +141,7 @@ const ProfileDetails = () => {
                         <p className='text-secondary m-0 p-0'>{postCount} posts</p>
                     </div>
                 </div>
-                <div className='bg-dark'>
-                    <img width={"100%"} src="https://pbs.twimg.com/profile_banners/1574992673957552129/1714547050" alt="banner" />
+                <div className='bg-dark' style={{ height: 200 }} >
                 </div>
                 <div className='d-flex justify-content-end p-2'>
                     <button onClick={() => setOpen(true)} type="button" className="btn btn-outline-light bg-black text-light rounded-pill fw-bold">

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { API_BASE_URL } from '../config';
 import Avatar from 'react-avatar';
 import { IoMdArrowBack } from "react-icons/io";
 import { Link } from 'react-router-dom';
@@ -16,7 +15,7 @@ const OtherUser = () => {
   const user = useSelector(state => state.userReducer);
   const [user1, setUser1] = useState(null);
   const [allPosts, setAllPosts] = useState([]);
-  
+
   // Calculate post count for the user
   const postCount = allPosts.filter(post => post.author._id === user1?._id).length;
 
@@ -32,7 +31,7 @@ const OtherUser = () => {
   async function fetchUser() {
     try {
       if (id) {
-        const response = await axios.get(`${API_BASE_URL}/api/user/${id}`, CONFIG_OBJ);
+        const response = await axios.get(`${process.env.REACT_APP_API}/api/user/${id}`, CONFIG_OBJ);
         setUser1(response.data.user);
       }
     } catch (error) {
@@ -42,7 +41,7 @@ const OtherUser = () => {
 
   // Function to fetch all posts
   const getAllPosts = async () => {
-    const response = await axios.get(`${API_BASE_URL}/api/allposts`);
+    const response = await axios.get(`${process.env.REACT_APP_API}/api/allposts`);
 
     if (response.status === 200) {
       setAllPosts(response.data.posts);
@@ -54,7 +53,7 @@ const OtherUser = () => {
 
   // Function to delete a post
   const deletePost = async (postId) => {
-    const response = await axios.delete(`${API_BASE_URL}/api/deletepost/${postId}`, CONFIG_OBJ);
+    const response = await axios.delete(`${process.env.REACT_APP_API}/api/deletepost/${postId}`, CONFIG_OBJ);
     if (response.status === 200) {
       getAllPosts();
     }
@@ -65,7 +64,7 @@ const OtherUser = () => {
     if (user1?.followers?.includes(user?.user?._id)) {
       // unfollow
       try {
-        const res = await axios.post(`${API_BASE_URL}/api/unfollow/${id}`, { id: user?.user?._id }, CONFIG_OBJ);
+        const res = await axios.post(`${process.env.REACT_APP_API}/api/unfollow/${id}`, { id: user?.user?._id }, CONFIG_OBJ);
         fetchUser();
         getAllPosts();
         toast.success(res.data.message);
@@ -77,7 +76,7 @@ const OtherUser = () => {
     } else {
       // follow
       try {
-        const res = await axios.post(`${API_BASE_URL}/api/follow/${id}`, { id: user?.user?._id }, CONFIG_OBJ);
+        const res = await axios.post(`${process.env.REACT_APP_API}/api/follow/${id}`, { id: user?.user?._id }, CONFIG_OBJ);
         fetchUser();
         getAllPosts();
         toast.success(res.data.message);
@@ -142,7 +141,7 @@ const OtherUser = () => {
           ) : ('')}
           </div>
         )
-      })} 
+      })}
     </div>
   )
 }

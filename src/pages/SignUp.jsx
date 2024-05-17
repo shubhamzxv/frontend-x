@@ -4,7 +4,6 @@ import './Signup.css'
 import Footer from '../components/Footer';
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { API_BASE_URL } from '../config'
 import axios from 'axios'
 import toast from 'react-hot-toast';
 
@@ -29,7 +28,7 @@ const SignUp = () => {
         const requestData = { fullName, username, gender, email, password, phone }; // Prepare request data
 
         axios
-            .post(`${API_BASE_URL}/api/register`, requestData)
+            .post(`${process.env.REACT_APP_API}/api/register`, requestData)
             .then((result) => {
                 if (result.status === 201) { // Check for successful registration
                     setLoading(false); // Hide loading indicator
@@ -72,7 +71,7 @@ const SignUp = () => {
                                     <input type="phone" className="form-control" value={phone} onChange={(ev) => setPhone(ev.target.value)} placeholder="Phone phone" />
                                     <label >Phone Number</label>
                                 </div>
-                                
+
                                 <div className="form-floating mb-3 ">
                                     <select className="form-select" value={gender} onChange={(ev) => setGender(ev.target.value)} aria-label="Floating label select example">
                                         <option selected>Select Gender</option>

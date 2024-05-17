@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Layout from '../components/Layout'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import { API_BASE_URL } from '../config'
 import toast from 'react-hot-toast'
 import Tweet from '../components/Tweet'
 import { useSelector } from 'react-redux'
@@ -13,16 +12,16 @@ const Following = () => {
     const [allPosts, setAllPosts] = useState([]);
     const [user1, setUser1] = useState(null);
     const id = user?.user?._id;
-// config obj
+    // config obj
     const CONFIG_OBJ = {
         headers: {
             "Conten-Type": "aplication/json",
             "Authorization": "Bearer " + localStorage.getItem("token")
         }
     }
-// gets all posts
+    // gets all posts
     const getAllPosts = async () => {
-        const response = await axios.get(`${API_BASE_URL}/api/allposts`);
+        const response = await axios.get(`${process.env.REACT_APP_API}/api/allposts`);
 
         if (response.status === 200) {
             setAllPosts(response.data.posts);
@@ -33,16 +32,16 @@ const Following = () => {
     }
     // delete post
     const deletePost = async (postId) => {
-        const response = await axios.delete(`${API_BASE_URL}/api/deletepost/${postId}`, CONFIG_OBJ);
+        const response = await axios.delete(`${process.env.REACT_APP_API}/api/deletepost/${postId}`, CONFIG_OBJ);
         if (response.status === 200) {
             getAllPosts();
         }
     }
-// fetching user
+    // fetching user
     async function fetchUser() {
         try {
             if (id) {
-                const response = await axios.get(`${API_BASE_URL}/api/user/${id}`, CONFIG_OBJ);
+                const response = await axios.get(`${process.env.REACT_APP_API}/api/user/${id}`, CONFIG_OBJ);
                 setUser1(response.data.user);
             }
         } catch (error) {
@@ -66,17 +65,17 @@ const Following = () => {
                         <h3 className='border-bottom border-info'>Following</h3>
                     </Link>
                 </div>
-                <CreatePost/>
+                <CreatePost />
                 {allPosts.map((post) => {
                     return (
                         <div key={post._id}>
                             {
-                                user1?.following?.includes(`${post.author._id}`) ? 
-                                (<Tweet
-                                    postData={post}
-                                    deletePost={deletePost}
-                                    getAllPosts={getAllPosts}
-                                />) : ('')
+                                user1?.following?.includes(`${post.author._id}`) ?
+                                    (<Tweet
+                                        postData={post}
+                                        deletePost={deletePost}
+                                        getAllPosts={getAllPosts}
+                                    />) : ('')
                             }
                         </div>
                     )

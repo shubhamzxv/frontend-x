@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import CreatePost from './CreatePost'
 import Tweet from './Tweet'
 import toast from 'react-hot-toast'
-import { API_BASE_URL } from '../config'
 import axios from 'axios'
 
 const Feeds = () => {
@@ -20,7 +19,7 @@ const Feeds = () => {
   // Function to fetch all posts from the server
   const getAllPosts = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/allposts`);
+      const response = await axios.get(`${process.env.REACT_APP_API}/api/allposts`);
 
       if (response.status === 200) {
         setAllPosts(response.data.posts);
@@ -36,7 +35,7 @@ const Feeds = () => {
   // Function to delete a post
   const deletePost = async (postId) => {
     try {
-      const response = await axios.delete(`${API_BASE_URL}/api/deletepost/${postId}`, CONFIG_OBJ);
+      const response = await axios.delete(`${process.env.REACT_APP_API}/api/deletepost/${postId}`, CONFIG_OBJ);
       if (response.status === 200) {
         getAllPosts();
       } else {
@@ -60,7 +59,7 @@ const Feeds = () => {
       {/* Displaying all posts */}
       {allPosts.map((post) => {
         return (
-          <div key={post._id}>
+          <div key={post?._id}>
             {/* Component to display a single post */}
             <Tweet
               postData={post}
